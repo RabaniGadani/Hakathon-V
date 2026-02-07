@@ -17,11 +17,10 @@ jobs:
         HF_TOKEN: ${{ secrets.HF_TOKEN }}
         HF_USERNAME: ${{ secrets.HF_USERNAME }}
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
-      run: |
-        git config --global user.email "bot@github.com"
-        git config --global user.name "Bot"
-
-        git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf
+      run: |    
+        - name: Clone Hugging Face Space
+          run: |
+            git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf
 
         cp main.py hf/
         cp pyproject.toml hf/
@@ -32,3 +31,8 @@ jobs:
         git add .
         git commit -m "Deploy" || echo "No changes"
         git push https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME main
+
+
+
+
+    
