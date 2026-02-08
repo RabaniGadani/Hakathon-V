@@ -20,7 +20,7 @@ jobs:
       run: |    
         - name: Clone Hugging Face Space
           run: |
-            git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf
+           git clone https://huggingface.co/spaces/muhammadessa/Agent
 
         cp main.py hf/
         cp pyproject.toml hf/
