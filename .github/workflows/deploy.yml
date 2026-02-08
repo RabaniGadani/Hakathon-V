@@ -24,13 +24,15 @@ jobs:
           HF_USERNAME: muhammadessa
           HF_SPACE_NAME: Agent
         run: |
-          git clone "https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}" hf
+          echo "Cloning Hugging Face Space..."
+          git clone "https://__token__:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}" hf
 
+          echo "Copying files..."
           cp app.py hf/
           cp requirements.txt hf/
           cp Dockerfile hf/
 
           cd hf
           git add .
-          git commit -m "Deploy Docker Space from GitHub Actions" || echo "No changes"
+          git commit -m "Deploy from GitHub Actions" || echo "No changes to commit"
           git push origin main
