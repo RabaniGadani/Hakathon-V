@@ -1,4 +1,4 @@
-name: Deploy to Hugging Face
+name: Deploy to Hugging Face Space
 
 on:
   push:
@@ -10,8 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get code
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
 
       - name: Clone Hugging Face Space
         env:
@@ -19,14 +24,20 @@ jobs:
           HF_USERNAME: ${{ secrets.HF_USERNAME }}
           HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
         run: |
-          git clone https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME} hf
+          echo "Cloning Hugging Face Space..."
+          git clone "https://${HF_USERNAME}:${HF_TOKEN}@huggingface.co/spaces/${HF_USERNAME}/${HF_SPACE_NAME}" hf
 
+          echo "Copying project files..."
           cp main.py hf/
           cp pyproject.toml hf/
           cp uv.lock hf/
           cp Dockerfile hf/
 
           cd hf
+
+          echo "Committing changes..."
           git add .
-          git commit -m "Deploy" || echo "No changes"
+          git commit -m "Deploy from GitHub Actions" || echo "No changes to commit"
+
+          echo "Pushing to Hugging Face..."
           git push origin main
