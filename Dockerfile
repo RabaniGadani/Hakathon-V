@@ -1,15 +1,15 @@
-FROM python:3.9
-
-RUN useradd -m -u 1000 user
-USER user
-ENV PATH="/home/user/.local/bin:$PATH"
+FROM python:3.12-alpine
 
 WORKDIR /app
 
-COPY --chown=user requirements.txt requirements.txt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install uv
 
-COPY --chown=user . /app
+COPY pyproject.toml uv.lock ./
 
-EXPOSE 7860
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+RUN uv sync --frozen --no-dev
+
+COPY main.py .
+
+EXPOSE 7860  # ← Change to 7860 (Hugging Face needs this)
+
+CMD ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7860"]
