@@ -18,8 +18,8 @@ jobs:
         HF_USERNAME: ${{ secrets.HF_USERNAME }}
         HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
       run: |
-        git config --global user.email "rabanigadani@gmail.com"
-        git config --global user.name "muhammadessa"
+        git config --global user.email "bot@github.com"
+        git config --global user.name "Bot"
 
         git clone https://huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf
 
